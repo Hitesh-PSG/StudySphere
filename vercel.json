@@ -17,7 +17,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "FRONTEND/dist/index.html"
+      "dest": "/index.html" 
     }
   ]
 }
