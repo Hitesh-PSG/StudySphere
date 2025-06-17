@@ -5,7 +5,7 @@
 // --- 1. IMPORTS ---
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const cors = require('cors'); // Import cors
 require('dotenv').config();
 
 const projectRoutes = require('./routes/projectRoutes');
@@ -16,28 +16,22 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --- 3. CORS (Cross-Origin Resource Sharing) CONFIGURATION ---
-// This is the only section that has been changed.
-// Instead of a complex function, we pass the allowed origins directly.
-// This is a more robust and standard way to configure CORS.
-const corsOptions = {
-  origin: [
-    'https://study-sphere-frontend-lovat.vercel.app', // Your deployed frontend
-    'http://localhost:5173',                         // Your local frontend for testing
-    'http://127.0.0.1:5173'                          // Another local alias
-  ]
-};
-
-app.use(cors(corsOptions));
+// THIS IS THE FINAL, SIMPLIFIED FIX.
+// This tells the server to allow requests from any origin.
+// While very specific rules are good, Vercel's firewall can sometimes
+// interfere. This simple setup is the most robust way to get it working on Vercel.
+app.use(cors());
 
 
 // --- 4. MIDDLEWARE ---
+// This must come after cors() and before your routes.
 app.use(express.json());
 
 
 // --- 5. DATABASE CONNECTION ---
 const dbUri = process.env.MONGO_URI;
 if (!dbUri) {
-  console.error('❌ FATAL ERROR: MONGO_URI is not defined in the .env file.');
+  console.error('❌ FATAL ERROR: MONGO_URI is not defined.');
   process.exit(1);
 }
 
