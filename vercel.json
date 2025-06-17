@@ -6,8 +6,11 @@
       "use": "@vercel/node"
     },
     {
-      "src": "FRONTEND/package.json",
-      "use": "@vercel/static-build"
+      "src": "FRONTEND",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "rewrites": [
@@ -16,7 +19,7 @@
       "destination": "/BACKEND/server.js"
     },
     {
-      "source": "/((?!api/|_next/|static/|assets/|favicon.ico|sw.js).*)",
+      "source": "/((?!api/|assets/).*)",
       "destination": "/index.html"
     }
   ]
