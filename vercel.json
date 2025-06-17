@@ -7,7 +7,7 @@
     },
     {
       "src": "FRONTEND/package.json",
-      "use": "@vercel/vite"
+      "use": "@vercel/static-build"
     }
   ],
   "rewrites": [
@@ -16,7 +16,7 @@
       "destination": "/BACKEND/server.js"
     },
     {
-      "source": "/((?!api/|assets/).*)",
+      "source": "/((?!api/|_next/|static/|assets/|favicon.ico|sw.js).*)",
       "destination": "/index.html"
     }
   ]
