@@ -19,7 +19,9 @@ const Projects = () => {
     const fetchAndShowProject = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/projects');
+        // --- THIS IS THE CORRECTED LINE ---
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`);
+        
         if (!response.ok) throw new Error('Could not connect to the backend.');
         const data = await response.json();
         setProjects(data);

@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-// --- THIS IS THE NEW IMPORT ---
-import { useAuth } from '../../Login/AuthContext'; // We need this to know who is logged in
+import { useAuth } from '../../Login/AuthContext';
 
 const ProjectUploadModal = ({ isOpen, onClose, onProjectSubmitted }) => {
   const initialState = { title: '', shortDescription: '', fullDescription: '', techStack: '', githubLink: '', demoLink: '' };
   const [formData, setFormData] = useState(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-
-  // --- GET THE CURRENT USER ---
   const { currentUser } = useAuth();
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -19,18 +16,15 @@ const ProjectUploadModal = ({ isOpen, onClose, onProjectSubmitted }) => {
     setIsSubmitting(true);
     setError('');
 
-    // --- THIS IS THE CRITICAL CHANGE ---
-    // We are adding the user's name to the data package we send to the backend.
     const submissionData = {
       ...formData,
       techStack: formData.techStack.split(',').map(s => s.trim()).filter(Boolean),
-      // Use the displayName if it exists, otherwise provide a fallback.
       userName: currentUser?.displayName || 'An anonymous user',
     };
 
     try {
-      // The fetch URL to your local backend is already correct
-      const response = await fetch('http://localhost:8000/api/projects', {
+      // --- THIS IS THE CORRECTED LINE ---
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submissionData),
