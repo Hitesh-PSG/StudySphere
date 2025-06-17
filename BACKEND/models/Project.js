@@ -1,3 +1,5 @@
+// BACKEND/models/Project.js
+
 const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema({
@@ -7,9 +9,14 @@ const projectSchema = new mongoose.Schema({
   techStack:        { type: [String], default: [] },
   demoLink:         { type: String, trim: true },
   githubLink:       { type: String, trim: true },
+  
+  // This field was already here and is correct. It will store the auto-generated URL.
   thumbnail:        { type: String, trim: true },
+  
+  // --- I HAVE ADDED THIS FIELD ---
+  // Your frontend sends `userName`, so the backend needs to be able to save it.
+  userName:         { type: String, required: true },
+
 }, { timestamps: true });
 
-// If the model already exists, use it. If not, create it.
-// This is important for serverless environments.
 module.exports = mongoose.models.Project || mongoose.model('Project', projectSchema);

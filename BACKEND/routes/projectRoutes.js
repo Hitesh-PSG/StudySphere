@@ -1,64 +1,73 @@
+// BACKEND/routes/projectRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const Project = require('../models/Project');
-const Notification = require('../models/Notification');
+const Project = require('../models/Project.js');
+
+// --- NEW DEPENDENCIES FOR IMAGE EXTRACTION ---
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const getLinkPreview = async (url) => {
-  try {
-    const { data } = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
-    const $ = cheerio.load(data);
-    const imageUrl = $('meta[property="og:image"]').attr('content') || $('meta[property="twitter:image"]').attr('content');
-    if (imageUrl) {
-      return { imageUrl };
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
-};
-
+// --- GET /api/projects - Fetches all projects (No changes needed here) ---
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find({}).sort({ createdAt: -1 });
-    res.status(200).json(projects);
+    const projects = await Project.find().sort({ createdAt: -1 }); // Sort by newest
+    res.json(projects);
   } catch (error) {
-    res.status(500).json({ message: "Server error fetching projects." });
+    res.status(500).json({ message: 'Error fetching projects', error });
   }
 });
 
+// --- POST /api/projects - Creates a new project ---
+// THIS IS THE ROUTE WE ARE MODIFYING
 router.post('/', async (req, res) => {
+  const { title, shortDescription, fullDescription, techStack, demoLink, githubLink, userName } = req.body;
+
   try {
-    const { title, shortDescription, demoLink, userName } = req.body;
+    let thumbnail = null;
 
-    if (!title || !shortDescription || title.trim() === '' || shortDescription.trim() === '') {
-      return res.status(400).json({ message: 'Title and Short Description are required.' });
-    }
+    // --- NEW LOGIC: AUTOMATICALLY EXTRACT THUMBNAIL ---
+    // If a demoLink is provided, try to fetch the Open Graph image
+    if (demoLink) {
+      try {
+        const response = await axios.get(demoLink, {
+            // Some sites block requests without a user-agent
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' }
+        });
+        const html = response.data;
+        const $ = cheerio.load(html);
+        
+        // Look for the 'og:image' meta tag, which is the standard for preview images
+        const imageUrl = $('meta[property="og:image"]').attr('content');
 
-    const projectData = { ...req.body };
+        if (imageUrl) {
+          thumbnail = imageUrl;
+        }
 
-    if (demoLink && demoLink.trim() !== '') {
-      const preview = await getLinkPreview(demoLink);
-      if (preview && preview.imageUrl) {
-        projectData.thumbnail = preview.imageUrl;
+      } catch (fetchError) {
+        console.error(`Could not fetch thumbnail from ${demoLink}:`, fetchError.message);
+        // If fetching fails, we just continue without a thumbnail. The project still gets saved.
       }
     }
-    
-    const project = new Project(projectData);
-    await project.save();
+    // --- END OF NEW LOGIC ---
 
-    const notificationMessage = `${userName || 'A user'} uploaded a new project: "${project.title}"`;
-    const notification = new Notification({
-      message: notificationMessage,
-      projectId: project._id,
+    const newProject = new Project({
+      title,
+      shortDescription,
+      fullDescription,
+      techStack,
+      demoLink,
+      githubLink,
+      userName,
+      thumbnail, // The 'thumbnail' variable will be the URL we found, or null.
     });
-    await notification.save();
-    console.log(`✅ Notification created for project ID: ${project._id}`);
 
-    res.status(201).json(project);
+    const savedProject = await newProject.save();
+    res.status(201).json(savedProject);
+    
   } catch (error) {
-    res.status(400).json({ message: `Failed to create project: ${error.message}` });
+    console.error("Error creating project:", error);
+    res.status(400).json({ message: 'Error creating project', error });
   }
 });
 
