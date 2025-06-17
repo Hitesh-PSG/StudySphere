@@ -1,11 +1,9 @@
 // src/firebase.js
 
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-// --- KEY ADDITION: Import the function to get the auth service ---
 import { getAuth } from "firebase/auth";
+// --- THIS IS THE REQUIRED ADDITION FOR THE DISCUSSION PANEL ---
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,8 +18,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
-// --- KEY ADDITION: Get the auth service and export it ---
-// This allows other files (like AuthContext.jsx) to use it for logging in.
+// --- EXPORT BOTH AUTH AND FIRESTORE ---
+// Export the auth service for user login/logout
 export const auth = getAuth(app);
+
+// Export the Firestore database service so the discussion panel can use it
+export const db = getFirestore(app);
+
+export default app;

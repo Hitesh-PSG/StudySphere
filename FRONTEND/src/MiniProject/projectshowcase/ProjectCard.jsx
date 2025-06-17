@@ -1,3 +1,5 @@
+// FRONTEND/src/MiniProject/projectshowcase/ProjectCard.jsx
+
 import React from 'react';
 import { ArrowRight, Github, ExternalLink } from 'lucide-react';
 
@@ -7,21 +9,16 @@ const ProjectCard = ({ project, onProjectClick }) => {
   return (
     <div 
       onClick={() => onProjectClick(project)}
-      className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl overflow-hidden
-                 group flex flex-col h-full
+      className="bg-gradient-to-br from-gray-900 to-gray-800/70 border border-gray-700/50 rounded-2xl
+                 group flex flex-col h-full p-6
                  transform hover:-translate-y-2 transition-all duration-300 
                  hover:shadow-2xl hover:shadow-yellow-500/10 hover:border-yellow-500/30 cursor-pointer"
     >
-      <div className="relative overflow-hidden">
-        <img 
-          src={project.thumbnail || `https://source.unsplash.com/random/400x225?abstract,dark,${project.title}`} 
-          alt={`${project.title || 'Project'} thumbnail`}
-          className="w-full h-48 object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-      </div>
+      {/* --- The Image section has been completely removed --- */}
       
-      <div className="p-5 flex flex-col flex-grow">
+      {/* --- MAIN CONTENT AREA --- */}
+      {/* We use flex-grow to push the footer to the bottom */}
+      <div className="flex flex-col flex-grow">
         <h3 
           className="text-xl font-bold text-gray-100 transition-all duration-300 
                      group-hover:bg-gradient-to-r group-hover:from-yellow-400 group-hover:to-orange-400 group-hover:bg-clip-text group-hover:text-transparent"
@@ -29,7 +26,7 @@ const ProjectCard = ({ project, onProjectClick }) => {
           {project.title || "Untitled Project"}
         </h3>
         
-        <p className="text-gray-400 mt-2 text-sm flex-grow min-h-[40px]">
+        <p className="text-gray-400 mt-2 text-sm flex-grow min-h-[60px]">
           {project.shortDescription || "No description provided."}
         </p>
 
@@ -42,38 +39,40 @@ const ProjectCard = ({ project, onProjectClick }) => {
             ))}
           </div>
         )}
-        
-        <div className="mt-6 pt-4 border-t border-gray-700/50 flex justify-between items-center">
-          <span className="text-sm font-semibold text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5">
-            View Project
-            <ArrowRight size={16} className="transform -translate-x-1 group-hover:translate-x-0 transition-transform duration-30á00"/>
-          </span>
-          <div className="flex items-center space-x-4">
-            {project.githubLink && (
-              <a 
-                href={project.githubLink} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                onClick={(e) => e.stopPropagation()} 
-                className="text-gray-400 hover:text-white transition-colors" 
-                aria-label="GitHub Repository"
-              >
-                <Github size={20} />
-              </a>
-            )}
-            {project.demoLink && (
-              <a 
-                href={project.demoLink} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                onClick={(e) => e.stopPropagation()} 
-                className="text-gray-400 hover:text-white transition-colors" 
-                aria-label="Live Demo"
-              >
-                <ExternalLink size={20} />
-              </a>
-            )}
-          </div>
+      </div>
+      
+      {/* --- FOOTER SECTION --- */}
+      {/* This section is now visually separated by a border-top */}
+      <div className="mt-6 pt-4 border-t border-gray-700/50 flex justify-between items-center">
+        <span className="text-sm font-semibold text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5">
+          View Details
+          <ArrowRight size={16} className="transform -translate-x-1 group-hover:translate-x-0 transition-transform duration-300"/>
+        </span>
+        <div className="flex items-center space-x-4">
+          {project.githubLink && (
+            <a 
+              href={project.githubLink} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onClick={(e) => e.stopPropagation()} 
+              className="text-gray-400 hover:text-white transition-colors" 
+              aria-label="GitHub Repository"
+            >
+              <Github size={20} />
+            </a>
+          )}
+          {project.demoLink && (
+            <a 
+              href={project.demoLink} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onClick={(e) => e.stopPropagation()} 
+              className="text-gray-400 hover:text-white transition-colors" 
+              aria-label="Live Demo"
+            >
+              <ExternalLink size={20} />
+            </a>
+          )}
         </div>
       </div>
     </div>

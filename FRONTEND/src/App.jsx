@@ -1,12 +1,10 @@
-// In FRONTEND/src/App.jsx
-
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast'; // --- ADD THIS IMPORT for notifications
 
 // --- CONTEXT IMPORTS ---
 import { AuthProvider, useAuth } from './Login/AuthContext';
 import NotificationProvider from './NotificationContext.jsx';
-// REMOVED: ThemeProvider import is gone.
 import { LoginModalProvider, useLoginModal } from './Login/LoginModalContext';
 
 // --- COMPONENT IMPORTS ---
@@ -20,6 +18,9 @@ import ArticlesPage from "./Articles/ArticlesPage.jsx";
 import LoginModal from "./Login/LoginModal.jsx";
 import Projects from './MiniProject/projectshowcase/Projects.jsx';
 import { Menu } from 'lucide-react';
+
+// --- IMPORT YOUR NEW DISCUSSION PAGE ---
+import DiscussionPage from './Discussions/DiscussionPage'; // Assuming files are in src/Discussions/
 
 // This component defines the main structure of your application
 const MainLayout = () => {
@@ -44,8 +45,6 @@ const MainLayout = () => {
     }, [isAiPanelOpen, isMobileSidebarOpen]);
 
     return (
-        // --- MODIFIED: Enforced a permanent dark theme ---
-        // The light mode classes have been removed. This layout is now always dark.
         <div className="flex h-screen bg-slate-900 text-slate-100">
             <Sidebar
                 isAiPanelOpen={isAiPanelOpen}
@@ -56,8 +55,19 @@ const MainLayout = () => {
 
             <div className="flex-1 flex flex-col overflow-hidden relative">
                 <Header />
-                {/* MODIFIED: Added global padding for all pages */}
                 <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
+                    {/* --- ADD THE TOASTER COMPONENT HERE --- */}
+                    <Toaster
+                        position="top-center"
+                        reverseOrder={false}
+                        toastOptions={{
+                            className: '',
+                            style: {
+                                background: '#334155', // slate-700
+                                color: '#f1f5f9', // slate-100
+                            },
+                        }}
+                    />
                     <Outlet />
                 </main>
                 <Footer />
@@ -106,7 +116,10 @@ const AppLogic = () => {
           <Route path="discover" element={<Discover />} />
           <Route path="articles" element={<ArticlesPage />} />
           <Route path="collections" element={<div className="p-8"><h1 className="text-3xl font-bold">Collections</h1></div>} />
-          <Route path="discussions" element={<div className="p-8"><h1 className="text-3xl font-bold">Discussions</h1></div>} />
+          
+          {/* --- UPDATE THIS ROUTE --- */}
+          <Route path="discussions" element={<DiscussionPage />} />
+          
           <Route path="projects" element={<Projects />} />
         </Route>
       </Routes>
@@ -115,8 +128,6 @@ const AppLogic = () => {
   );
 };
 
-// --- MODIFIED: REMOVED THEMEPROVIDER ---
-// The top-level component now no longer includes the ThemeProvider.
 const App = () => {
   return (
     <NotificationProvider>
