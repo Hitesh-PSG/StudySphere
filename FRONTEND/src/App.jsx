@@ -1,10 +1,12 @@
+// In FRONTEND/src/App.jsx
+
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Outlet } from 'react-router-dom';
 
 // --- CONTEXT IMPORTS ---
 import { AuthProvider, useAuth } from './Login/AuthContext';
 import NotificationProvider from './NotificationContext.jsx';
-// import { ThemeProvider } from './ThemeContext.jsx';
+// REMOVED: ThemeProvider import is gone.
 import { LoginModalProvider, useLoginModal } from './Login/LoginModalContext';
 
 // --- COMPONENT IMPORTS ---
@@ -16,29 +18,23 @@ import Dashboard from "./Dashboard/Dashboard.jsx";
 import Discover from "./Discover/Discover.jsx";
 import ArticlesPage from "./Articles/ArticlesPage.jsx";
 import LoginModal from "./Login/LoginModal.jsx";
-import Projects from './MiniProject/projectshowcase/Projects.jsx'; // Correct import
+import Projects from './MiniProject/projectshowcase/Projects.jsx';
 import { Menu } from 'lucide-react';
 
-// --- REFORMATTED FOR READABILITY ---
-// This component defines the main structure of your application (Sidebar, Header, etc.)
+// This component defines the main structure of your application
 const MainLayout = () => {
-    // State for the AI Assistant panel
     const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
-    // State for the mobile sidebar
     const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-    // Toggles the AI panel and closes the mobile sidebar if it's open
     const toggleAiPanel = () => {
         setIsAiPanelOpen(prev => !prev);
-        setMobileSidebarOpen(false); // Ensure mobile menu closes
+        setMobileSidebarOpen(false);
     };
 
-    // Toggles the mobile sidebar
     const toggleMobileSidebar = () => {
         setMobileSidebarOpen(prev => !prev);
     };
 
-    // A side effect to prevent background scrolling when a modal or overlay is open
     useEffect(() => {
         if (isAiPanelOpen || isMobileSidebarOpen) {
             document.body.style.overflow = 'hidden';
@@ -48,7 +44,9 @@ const MainLayout = () => {
     }, [isAiPanelOpen, isMobileSidebarOpen]);
 
     return (
-        <div className="flex h-screen bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-100">
+        // --- MODIFIED: Enforced a permanent dark theme ---
+        // The light mode classes have been removed. This layout is now always dark.
+        <div className="flex h-screen bg-slate-900 text-slate-100">
             <Sidebar
                 isAiPanelOpen={isAiPanelOpen}
                 onToggleAiPanel={toggleAiPanel}
@@ -58,14 +56,13 @@ const MainLayout = () => {
 
             <div className="flex-1 flex flex-col overflow-hidden relative">
                 <Header />
-                <main className="flex-1 overflow-x-hidden overflow-y-auto">
-                    {/* The <Outlet> is where your page components (Dashboard, Projects, etc.) will be rendered */}
+                {/* MODIFIED: Added global padding for all pages */}
+                <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
                     <Outlet />
                 </main>
                 <Footer />
             </div>
             
-            {/* Mobile "Hamburger" Menu Button */}
             {!isMobileSidebarOpen && (
                 <button
                     onClick={toggleMobileSidebar}
@@ -76,7 +73,6 @@ const MainLayout = () => {
                 </button>
             )}
 
-            {/* AI Panel Overlay */}
             {isAiPanelOpen && (
                 <div className="fixed inset-0 bg-black/60 z-40" onClick={toggleAiPanel}></div>
             )}
@@ -91,7 +87,6 @@ const AppLogic = () => {
   const { currentUser } = useAuth();
   const { openModal } = useLoginModal();
 
-  // Effect to prompt login for non-authenticated users
   useEffect(() => {
     if (!currentUser) {
       const timer = setTimeout(() => {
@@ -106,18 +101,13 @@ const AppLogic = () => {
     <>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          {/* Nested routes are rendered inside MainLayout's <Outlet> */}
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="discover" element={<Discover />} />
           <Route path="articles" element={<ArticlesPage />} />
           <Route path="collections" element={<div className="p-8"><h1 className="text-3xl font-bold">Collections</h1></div>} />
           <Route path="discussions" element={<div className="p-8"><h1 className="text-3xl font-bold">Discussions</h1></div>} />
-          
-          {/* --- THIS ROUTE IS CORRECT --- */}
-          {/* It matches the '/projects' link in your sidebar */}
           <Route path="projects" element={<Projects />} />
-
         </Route>
       </Routes>
       <LoginModal />
@@ -125,18 +115,17 @@ const AppLogic = () => {
   );
 };
 
-// The top-level component that wraps everything in context providers
+// --- MODIFIED: REMOVED THEMEPROVIDER ---
+// The top-level component now no longer includes the ThemeProvider.
 const App = () => {
   return (
-    <ThemeProvider>
-      <NotificationProvider>
-        <AuthProvider>
-          <LoginModalProvider>
-            <AppLogic />
-          </LoginModalProvider>
-        </AuthProvider>
-      </NotificationProvider>
-    </ThemeProvider>
+    <NotificationProvider>
+      <AuthProvider>
+        <LoginModalProvider>
+          <AppLogic />
+        </LoginModalProvider>
+      </AuthProvider>
+    </NotificationProvider>
   );
 };
 
