@@ -1,29 +1,21 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
-// --- CHANGE #1: IMPORT A NEW ICON FOR THE PROJECT SHOWCASE ---
-// I've chosen 'Layers' as a nice icon for "Projects".
-// The old 'Component' icon for "Mini Project" is no longer needed.
 import { Home, Search, BookOpen, Users, Bot, Layers } from 'lucide-react';
 
 const Sidebar = ({ isAiPanelOpen, onToggleAiPanel, isMobileOpen, onMobileClose }) => {
   
+  // --- CORE CHANGE: UPDATING NAVIGATION PATHS ---
+  // Each path is now prefixed with '/app' to match the routing in App.jsx.
+  // This ensures that clicking a link takes you to the correct page inside the main application layout.
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/dashboard' },
-    { id: 'discover', label: 'Discover', icon: Search, path: '/discover' },
-    { id: 'articles', label: 'Articles', icon: BookOpen, path: '/articles' },
-    { id: 'discussions', label: 'Discussions', icon: Users, path: '/discussions' },
-    
-    // --- CHANGE #2: REPLACE THE OLD "MINI PROJECT" WITH THE NEW "PROJECTS" LINK ---
-    // This new object points to the '/projects' route we created in App.jsx.
-// The corrected version for sidebar.jsx
-{ id: 'projects', label: 'Projects', icon: Layers, path: '/projects' },
-
-    // The AI assistant button is now last
-    { id: 'ai-assistant', label: 'AI Assistant', icon: Bot, path: null },
+    { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/app/dashboard' },
+    { id: 'discover', label: 'Discover', icon: Search, path: '/app/discover' },
+    { id: 'articles', label: 'Articles', icon: BookOpen, path: '/app/articles' },
+    { id: 'discussions', label: 'Discussions', icon: Users, path: '/app/discussions' },
+    { id: 'projects', label: 'Projects', icon: Layers, path: '/app/projects' },
+    { id: 'ai-assistant', label: 'AI Assistant', icon: Bot, path: null }, // This is a button, so its path remains null.
   ];
 
-  // This function tells NavLink how to style itself based on whether it's active
   const getNavLinkClass = ({ isActive }) =>
     `w-full flex items-center space-x-4 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
       isActive
