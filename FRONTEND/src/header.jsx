@@ -24,7 +24,7 @@ const Header = () => {
     try {
       await logout();
       setProfileOpen(false);
-      navigate('/'); // This is CORRECT: redirects to the landing page on logout.
+      navigate('/');
     } catch (error) { console.error("Failed to log out", error); }
   };
 
@@ -50,14 +50,12 @@ const Header = () => {
   const handleNotificationClick = (notification) => {
     setNotificationOpen(false);
     if (notification.projectId) {
-      // --- FIX #1: NAVIGATE TO THE CORRECT, PREFIXED PATH ---
       navigate('/app/projects', { state: { openProjectWithId: notification.projectId } });
     }
   };
 
   return (
     <header className="bg-gray-900 border-b border-gray-800 h-16 flex items-center justify-between px-4 sm:px-6">
-      {/* This link correctly points to the root/landing page */}
       <Link to="/" className="flex items-center gap-2"></Link>
       <div className="flex items-center gap-4">
         <div className="relative" ref={notificationRef}>
@@ -109,7 +107,6 @@ const Header = () => {
                         <p className="text-xs text-slate-400 truncate">{currentUser.email}</p>
                     </div>
                     <div className="p-2">
-                        {/* --- FIX #2: LINK TO THE CORRECT, PREFIXED DASHBOARD PATH --- */}
                         <Link to="/app/dashboard" onClick={() => setProfileOpen(false)} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 rounded-md">
                             <LayoutDashboard size={16} /> Dashboard
                         </Link>

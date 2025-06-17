@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// --- 1. IMPORT Navigate FOR REDIRECTS ---
 import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
@@ -23,7 +22,6 @@ import LandingPage from './landing/LandingPage.jsx';
 import { Menu } from 'lucide-react';
 
 const MainLayout = () => {
-    // ... (Your MainLayout component code remains the same)
     const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
     const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
     const { currentUser } = useAuth();
@@ -65,10 +63,7 @@ const AppLogic = () => {
   return (
     <>
       <Routes>
-        {/* Public Route */}
         <Route path="/" element={<LandingPage />} />
-        
-        {/* App Routes */}
         <Route path="/app" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -78,14 +73,11 @@ const AppLogic = () => {
           <Route path="projects" element={<Projects />} />
           <Route path="collections" element={<div className="p-8"><h1 className="text-3xl font-bold">Collections</h1></div>} />
         </Route>
-
-        {/* --- 2. ADD REDIRECTS FOR ALL OLD PATHS --- */}
         <Route path="/dashboard" element={<Navigate to="/app/dashboard" replace />} />
         <Route path="/discover" element={<Navigate to="/app/discover" replace />} />
         <Route path="/articles" element={<Navigate to="/app/articles" replace />} />
         <Route path="/discussions" element={<Navigate to="/app/discussions" replace />} />
         <Route path="/projects" element={<Navigate to="/app/projects" replace />} />
-        
       </Routes>
       <LoginModal />
     </>
