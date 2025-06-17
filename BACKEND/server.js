@@ -6,14 +6,12 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
 
-// Middleware
-// Using a general cors() is perfectly fine and robust for this setup.
+// Use a general CORS policy. This is robust and allows your frontend to connect.
 app.use(cors()); 
 app.use(express.json());
 
-// Import both of your route files
+// Import your route files
 const projectRoutes = require('./routes/projectRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 
@@ -27,17 +25,11 @@ mongoose.connect(dbUri)
   .then(() => console.log('✅ MongoDB Connected Successfully!'))
   .catch(err => console.error('❌ DATABASE CONNECTION ERROR:', err));
 
-// --- ROUTE REGISTRATION (THE FIX) ---
-// The "/api" prefix is now handled by the new vercel.json file in this folder.
-// Express only needs to handle the part of the path AFTER /api.
-app.use('/projects', projectRoutes);
-app.use('/notifications', notificationRoutes);
+// --- THE FINAL FIX ---
+// We explicitly tell Express to listen for the FULL path that the frontend is calling.
+// No rewrites are needed. This is direct and foolproof.
+app.use('/api/projects', projectRoutes);
+app.use('/api/notifications', notificationRoutes);
 
-
-// This part is for local development only, Vercel ignores it.
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running and listening on http://localhost:${PORT}`);
-});
-
-// Export the app for Vercel's serverless environment
+// Export the app for Vercel
 module.exports = app;
