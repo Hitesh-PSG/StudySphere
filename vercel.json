@@ -1,22 +1,30 @@
 {
   "version": 2,
   "builds": [
+    
     {
       "src": "BACKEND/server.js",
       "use": "@vercel/node"
     },
+    
     {
       "src": "FRONTEND",
       "use": "@vercel/static-build"
     }
   ],
   "rewrites": [
+    
     {
       "source": "/api/(.*)",
       "destination": "/BACKEND/server.js"
     },
+
     {
-      "source": "/((?!api/).*)",
+      "source": "/assets/(.*)",
+      "destination": "/FRONTEND/assets/$1"
+    },
+    {
+      "source": "/((?!api/|assets/).*)",
       "destination": "/index.html"
     }
   ]
