@@ -150,7 +150,7 @@ const Dashboard = () => {
             <section className="text-center">
                 <div>
                     <h3 className="text-lg text-slate-400 mb-4">A Passion Project by</h3>
-                    <p className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-cyan-400">Hitesh P.</p>
+                    <p className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-cyan-400">Hitesh P</p>
                     <div className="flex justify-center gap-6 mt-4"><a href="https://github.com/Hitesh-PSG" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors"><Github /></a><a href="https://www.linkedin.com/in/hitesh-p24/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors"><Linkedin /></a></div>
                 </div>
             </section>

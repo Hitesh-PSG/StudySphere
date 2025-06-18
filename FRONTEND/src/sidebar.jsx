@@ -6,7 +6,7 @@ const Sidebar = ({ isAiPanelOpen, onToggleAiPanel, isMobileOpen, onMobileClose }
   
   // 1. CORRECTED PATHS: Removed '/app' from all paths in this array
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/dashboard' },
+    { id: 'dashboard', label: 'Home', icon: Home, path: '/dashboard' },
     { id: 'discover', label: 'Discover', icon: Search, path: '/discover' },
     { id: 'articles', label: 'Articles', icon: BookOpen, path: '/articles' },
     { id: 'discussions', label: 'Discussions', icon: Users, path: '/discussions' },
