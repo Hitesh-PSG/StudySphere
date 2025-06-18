@@ -1,6 +1,8 @@
 // src/Articles/ArticlesPage.jsx
 
-import React, { useState } from 'react';
+// EDIT 1: Import useEffect and useOutletContext
+import React, { useState, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { articles } from './article';
 import ArticleView from './ArticleView';
 import { Star, Clock, ExternalLink } from 'lucide-react';
@@ -8,8 +10,27 @@ import { Star, Clock, ExternalLink } from 'lucide-react';
 const filterCategories = ['All Articles', 'DSA', 'Web Development', 'System Design', 'Interview Prep', 'Data Science', 'CS Core'];
 
 const ArticlesPage = () => {
+  // EDIT 2: Get the function from the parent layout
+  const { setIsSidebarVisible } = useOutletContext();
+
   const [activeFilter, setActiveFilter] = useState('All Articles');
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  // EDIT 3: Add this block to control the sidebar
+  useEffect(() => {
+    // If an article is selected (view is open), hide the sidebar
+    if (selectedArticle) {
+      setIsSidebarVisible(false);
+    } else {
+      // Otherwise, show the sidebar
+      setIsSidebarVisible(true);
+    }
+    // Cleanup function ensures the sidebar always comes back
+    return () => {
+      setIsSidebarVisible(true);
+    };
+  }, [selectedArticle, setIsSidebarVisible]);
+
 
   const featuredArticles = articles.filter(article => article.isFeatured);
 
@@ -82,6 +103,7 @@ const ArticlesPage = () => {
     );
   };
 
+  // The rest of your code is completely unchanged.
   return (
     <>
       {selectedArticle ? (
@@ -94,13 +116,9 @@ const ArticlesPage = () => {
             <p className="text-sm text-yellow-400 mt-2">{articles.length} articles available</p>
           </header>
 
-          {/* --- THIS IS THE CORRECTED SECTION --- */}
           <section className="mb-12">
-            {/* CHANGE 1: Title is now centered to match the constrained grid below it. */}
             <h2 className="text-2xl font-bold mb-4 text-center">Featured Articles</h2>
             <div className="w-20 h-1 bg-yellow-400 mx-auto mb-6"></div>
-
-            {/* CHANGE 2: A wrapper div that limits the width and centers the grid. */}
             <div className="max-w-5xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {featuredArticles.map(renderArticleCard)}

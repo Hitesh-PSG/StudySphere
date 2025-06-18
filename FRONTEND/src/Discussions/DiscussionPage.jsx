@@ -4,7 +4,7 @@ import { useAuth } from '../Login/AuthContext';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import PostItem from './PostItem';
 import PostSkeleton from './PostSkeleton';
-import { Send, MessageSquarePlus } from 'lucide-react'; // Added an icon for the empty state
+import { Send, MessageSquarePlus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 // Self-contained component for our custom animations
@@ -45,10 +45,11 @@ const DiscussionPage = () => {
       setIsLoading(false);
     }, (err) => {
       setError('Failed to load posts. Please check your connection and try again.');
+      console.error(err);
       setIsLoading(false);
     });
     return () => unsubscribe();
-  }, [currentUser]);
+  }, [currentUser]); // currentUser dependency is kept for potential re-fetch on login/logout
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,6 +70,7 @@ const DiscussionPage = () => {
       toast.success('Posted successfully!', { id: loadingToast });
     } catch (err) {
       toast.error("Couldn't send post. Please try again.", { id: loadingToast });
+      console.error("Post submission error: ", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -86,23 +88,22 @@ const DiscussionPage = () => {
       return <p className="text-center p-8 text-red-400 bg-red-900/20 rounded-lg">{error}</p>;
     }
     if (posts.length === 0) {
-      // MODIFIED: A much more visually appealing empty state.
       return (
-        <div className="text-center p-12 bg-slate-900/40 rounded-2xl border border-slate-800/50 flex flex-col items-center gap-4">
+        // MODIFIED: Adjusted padding and font sizes for mobile.
+        <div className="text-center p-8 sm:p-12 bg-slate-900/40 rounded-2xl border border-slate-800/50 flex flex-col items-center gap-4">
           <MessageSquarePlus className="text-slate-600" size={48} strokeWidth={1.5} />
-          <h3 className="text-xl font-bold text-slate-300">It's quiet in here...</h3>
-          <p className="text-slate-400 max-w-xs">Be the first to start a discussion and get the conversation rolling!</p>
+          <h3 className="text-lg sm:text-xl font-bold text-slate-300">It's quiet in here...</h3>
+          <p className="text-slate-400 max-w-sm">Be the first to start a discussion and get the conversation rolling!</p>
         </div>
       );
     }
     return (
       <div className="space-y-6">
-        {/* MODIFIED: Posts now stagger in with a subtle animation */}
         {posts.map((post, index) => (
           <div
             key={post.id}
             className="animate-post-enter"
-            style={{ animationDelay: `${index * 80}ms`, opacity: 0 /* Initial state for animation */ }}
+            style={{ animationDelay: `${index * 80}ms`, opacity: 0 }}
           >
             <PostItem post={post} />
           </div>
@@ -114,27 +115,30 @@ const DiscussionPage = () => {
   return (
     <>
       <AnimationStyles />
-      {/* MODIFIED: The whole container now fades in and slides up */}
-      <div className="max-w-3xl mx-auto py-6 px-4 animate-fade-in-up">
-        <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-slate-100 tracking-tight">
+      {/* MODIFIED: Adjusted horizontal padding for different screen sizes. */}
+      <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 animate-fade-in-up">
+        {/* MODIFIED: Made font size responsive. Smaller on mobile, larger on desktop. */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center text-slate-100 tracking-tight">
           Community Discussions
         </h1>
         
         {currentUser ? (
-          // MODIFIED: The form is restyled to match the theme.
-          <form onSubmit={handleSubmit} className="flex items-start gap-4 mb-8">
+          // MODIFIED: Form layout is now responsive. It's a column on mobile and a row on larger screens.
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4 mb-8">
             <input
               type="text"
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
               placeholder="Ask a question or start a discussion..."
-              className="flex-grow p-4 h-14 rounded-lg bg-slate-900/80 border border-slate-700/50 focus:border-yellow-500/50 focus:ring-0 focus:outline-none focus:shadow-[0_0_15px_rgba(255,214,10,0.2)] transition-all duration-300"
+              // MODIFIED: Added w-full to ensure it takes full width in the flex-col layout.
+              className="flex-grow p-4 h-14 w-full rounded-lg bg-slate-900/80 border border-slate-700/50 focus:border-yellow-500/50 focus:ring-0 focus:outline-none focus:shadow-[0_0_15px_rgba(255,214,10,0.2)] transition-all duration-300"
               disabled={isSubmitting}
             />
             <button 
               type="submit" 
               disabled={!newPost.trim() || isSubmitting} 
-              className="h-14 bg-yellow-500 text-black font-bold px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-yellow-600 hover:-translate-y-0.5"
+              // MODIFIED: Button is full-width on mobile (w-full) and auto-width on larger screens (sm:w-auto).
+              className="h-14 w-full sm:w-auto bg-yellow-500 text-black font-bold px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-yellow-600 hover:-translate-y-0.5"
             >
               <Send size={18} />
               <span>{isSubmitting ? "..." : "Post"}</span>

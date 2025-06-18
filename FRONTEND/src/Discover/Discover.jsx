@@ -1,5 +1,7 @@
 // src/Discover/Discover.jsx
-import React, { useState, useMemo } from 'react';
+// EDIT 1: Import useEffect and useOutletContext
+import React, { useState, useMemo, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { resources } from './resources';
 import ResourceCard from './ResourceCard';
 import ResourceDetailModal from './ResourceDetailModal';
@@ -7,12 +9,31 @@ import VideoPlayerModal from './VideoPlayerModal';
 import SearchAndFilter from './SearchAndFilter';
 
 const Discover = () => {
+  // EDIT 2: Get the function from the MainLayout (the parent)
+  const { setIsSidebarVisible } = useOutletContext();
+  
   // All your existing state and handlers remain unchanged...
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState({ domain: '', difficulty: '', type: '', tags: [] });
+
+  // EDIT 3: Add this useEffect block to control the sidebar
+  useEffect(() => {
+    // If the video modal is open, tell the layout to hide the sidebar
+    if (isVideoModalOpen) {
+      setIsSidebarVisible(false);
+    } else {
+      // Otherwise, tell the layout to show it
+      setIsSidebarVisible(true);
+    }
+    // This part is important: if you leave this page, it ensures the sidebar comes back
+    return () => {
+      setIsSidebarVisible(true);
+    };
+  }, [isVideoModalOpen, setIsSidebarVisible]);
+
 
   const filteredResources = useMemo(() => {
     return resources.filter(resource => {
@@ -62,9 +83,9 @@ const Discover = () => {
     alert(`Resource "${resource.title}" added to your collection!`);
   };
 
+  // The rest of your JSX return statement is completely unchanged
   return (
-    // --- KEY CHANGE IS HERE: Add the ID to this div ---
-    <div id="discover-section" className="w-full">
+    <div id="discover-section" className="bg-slate-900 min-h-screen text-slate-200">
       <div className="container mx-auto p-4 md:p-8">
         <div className="text-center mb-10">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Resource Hub</h1>
