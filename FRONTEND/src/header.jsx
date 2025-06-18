@@ -50,7 +50,8 @@ const Header = () => {
   const handleNotificationClick = (notification) => {
     setNotificationOpen(false);
     if (notification.projectId) {
-      navigate('/app/projects', { state: { openProjectWithId: notification.projectId } });
+      // 1. CORRECTED PATH: Removed '/app'
+      navigate('/projects', { state: { openProjectWithId: notification.projectId } });
     }
   };
 
@@ -107,7 +108,8 @@ const Header = () => {
                         <p className="text-xs text-slate-400 truncate">{currentUser.email}</p>
                     </div>
                     <div className="p-2">
-                        <Link to="/app/dashboard" onClick={() => setProfileOpen(false)} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 rounded-md">
+                        {/* 2. CORRECTED PATH: Removed '/app' */}
+                        <Link to="/dashboard" onClick={() => setProfileOpen(false)} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 rounded-md">
                             <LayoutDashboard size={16} /> Dashboard
                         </Link>
                         <button onClick={handleLogout} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-red-400 hover:bg-slate-700/50 rounded-md mt-1">

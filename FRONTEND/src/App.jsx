@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
+// 1. ADDED: Import 'useParams' to handle the redirect logic.
+import { Routes, Route, Outlet, Navigate, useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 // --- CONTEXT IMPORTS ---
@@ -18,8 +19,15 @@ import ArticlesPage from "./Articles/ArticlesPage.jsx";
 import LoginModal from "./Login/LoginModal.jsx";
 import Projects from './MiniProject/projectshowcase/Projects.jsx';
 import DiscussionPage from './Discussions/DiscussionPage.jsx';
-import LandingPage from './landing/LandingPage.jsx';
 import { Menu } from 'lucide-react';
+
+// 2. ADDED: A small component to handle redirects from old "/app/*" paths.
+const LegacyAppRedirect = () => {
+  const params = useParams();
+  // The '*' captures everything after '/app/'.
+  const splat = params['*'] || 'dashboard'; // If it's just '/app', go to dashboard.
+  return <Navigate to={`/${splat}`} replace />;
+};
 
 const MainLayout = () => {
     const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
@@ -63,9 +71,9 @@ const AppLogic = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/app" element={<MainLayout />}>
-          <Route index element={<Dashboard />} />
+        {/* Main application routes */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="discover" element={<Discover />} />
           <Route path="articles" element={<ArticlesPage />} />
@@ -73,11 +81,10 @@ const AppLogic = () => {
           <Route path="projects" element={<Projects />} />
           <Route path="collections" element={<div className="p-8"><h1 className="text-3xl font-bold">Collections</h1></div>} />
         </Route>
-        <Route path="/dashboard" element={<Navigate to="/app/dashboard" replace />} />
-        <Route path="/discover" element={<Navigate to="/app/discover" replace />} />
-        <Route path="/articles" element={<Navigate to="/app/articles" replace />} />
-        <Route path="/discussions" element={<Navigate to="/app/discussions" replace />} />
-        <Route path="/projects" element={<Navigate to="/app/projects" replace />} />
+        
+        {/* 3. ADDED: This route catches any old "/app/..." URL and redirects it. */}
+        <Route path="/app/*" element={<LegacyAppRedirect />} />
+
       </Routes>
       <LoginModal />
     </>

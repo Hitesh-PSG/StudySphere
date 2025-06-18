@@ -1,19 +1,18 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom'; // --- CHANGE: Imported Link for the logo ---
+import { NavLink, Link } from 'react-router-dom';
 import { Home, Search, BookOpen, Users, Bot, Layers } from 'lucide-react';
 
 const Sidebar = ({ isAiPanelOpen, onToggleAiPanel, isMobileOpen, onMobileClose }) => {
   
-  // --- CHANGE: AI Assistant is removed from this list for cleaner mapping ---
+  // 1. CORRECTED PATHS: Removed '/app' from all paths in this array
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/app/dashboard' },
-    { id: 'discover', label: 'Discover', icon: Search, path: '/app/discover' },
-    { id: 'articles', label: 'Articles', icon: BookOpen, path: '/app/articles' },
-    { id: 'discussions', label: 'Discussions', icon: Users, path: '/app/discussions' },
-    { id: 'projects', label: 'Projects', icon: Layers, path: '/app/projects' },
+    { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/dashboard' },
+    { id: 'discover', label: 'Discover', icon: Search, path: '/discover' },
+    { id: 'articles', label: 'Articles', icon: BookOpen, path: '/articles' },
+    { id: 'discussions', label: 'Discussions', icon: Users, path: '/discussions' },
+    { id: 'projects', label: 'Projects', icon: Layers, path: '/projects' },
   ];
   
-  // --- CHANGE: Consolidated styles for maintainability (DRY principle) ---
   const activeClasses = 'bg-yellow-500 text-black shadow-lg shadow-yellow-600/60';
   const inactiveClasses = 'text-yellow-400 hover:bg-orange-500/30 hover:text-orange-300';
 
@@ -39,8 +38,8 @@ const Sidebar = ({ isAiPanelOpen, onToggleAiPanel, isMobileOpen, onMobileClose }
       `}>
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-between p-6 flex-shrink-0">
-            {/* --- CHANGE: Logo is now a clickable link to the dashboard --- */}
-            <Link to="/app/dashboard" className="text-2xl font-bold text-yellow-400 tracking-wide drop-shadow-md transition-opacity hover:opacity-80">
+            {/* 2. CORRECTED PATH: Removed '/app' from the logo link */}
+            <Link to="/dashboard" className="text-2xl font-bold text-yellow-400 tracking-wide drop-shadow-md transition-opacity hover:opacity-80">
               StudyHub
             </Link>
           </div>
@@ -51,7 +50,6 @@ const Sidebar = ({ isAiPanelOpen, onToggleAiPanel, isMobileOpen, onMobileClose }
           
           <nav className="px-6 flex-1">
             <ul className="space-y-2">
-              {/* --- CHANGE: This map is now cleaner, only handling NavLinks --- */}
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -67,7 +65,6 @@ const Sidebar = ({ isAiPanelOpen, onToggleAiPanel, isMobileOpen, onMobileClose }
                   </li>
                 );
               })}
-              {/* --- CHANGE: AI Assistant button is handled separately for clarity --- */}
               <li key="ai-assistant">
                 <button
                   onClick={() => { onToggleAiPanel(); handleMobileLinkClick(); }}
