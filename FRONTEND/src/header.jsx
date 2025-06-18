@@ -109,9 +109,9 @@ const Header = () => {
                     </div>
                     <div className="p-2">
                         {/* 2. CORRECTED PATH: Removed '/app' */}
-                        <Link to="/dashboard" onClick={() => setProfileOpen(false)} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 rounded-md">
+                        {/* <Link to="/dashboard" onClick={() => setProfileOpen(false)} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 rounded-md">
                             <LayoutDashboard size={16} /> Dashboard
-                        </Link>
+                        </Link> */}
                         <button onClick={handleLogout} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-red-400 hover:bg-slate-700/50 rounded-md mt-1">
                             <LogOut size={16} /> Log Out
                         </button>

@@ -1,5 +1,6 @@
+// FRONTEND/src/App.jsx
+
 import React, { useState, useEffect } from "react";
-// 1. ADDED: Import 'useParams' to handle the redirect logic.
 import { Routes, Route, Outlet, Navigate, useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
@@ -21,11 +22,12 @@ import Projects from './MiniProject/projectshowcase/Projects.jsx';
 import DiscussionPage from './Discussions/DiscussionPage.jsx';
 import { Menu } from 'lucide-react';
 
-// 2. ADDED: A small component to handle redirects from old "/app/*" paths.
+// 1. CHANGED: Import the new 'LofiVaporwaveBackground' component
+import LofiVaporwaveBackground from "./LofiVaporwaveBackground.jsx";
+
 const LegacyAppRedirect = () => {
   const params = useParams();
-  // The '*' captures everything after '/app/'.
-  const splat = params['*'] || 'dashboard'; // If it's just '/app', go to dashboard.
+  const splat = params['*'] || 'dashboard';
   return <Navigate to={`/${splat}`} replace />;
 };
 
@@ -50,9 +52,16 @@ const MainLayout = () => {
     }, [isAiPanelOpen, isMobileSidebarOpen]);
 
     return (
-        <div className="flex h-screen bg-slate-900 text-slate-100">
+        // 2. REMOVED the static background color class
+        <div className="flex h-screen text-slate-100">
+            {/* 3. CHANGED: The new animated background is placed here. */}
+            <LofiVaporwaveBackground />
+            
+            {/* Your existing sidebar will appear perfectly on top */}
             <Sidebar isAiPanelOpen={isAiPanelOpen} onToggleAiPanel={toggleAiPanel} isMobileOpen={isMobileSidebarOpen} onMobileClose={() => setMobileSidebarOpen(false)} />
-            <div className="flex-1 flex flex-col overflow-hidden relative">
+            
+            {/* 4. ENSURED main content is layered on top */}
+            <div className="flex-1 flex flex-col overflow-hidden relative z-10">
                 <Header />
                 <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
                     <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { background: '#334155', color: '#f1f5f9' } }} />
@@ -60,6 +69,8 @@ const MainLayout = () => {
                 </main>
                 <Footer />
             </div>
+
+            {/* These elements are unchanged and will work correctly */}
             {!isMobileSidebarOpen && (<button onClick={toggleMobileSidebar} className="lg:hidden fixed top-3 left-4 z-50 p-2 rounded-md text-gray-400 bg-gray-900/50 backdrop-blur-sm hover:text-white hover:bg-gray-700" aria-label="Open sidebar"><Menu size={24} /></button>)}
             {isAiPanelOpen && (<div className="fixed inset-0 bg-black/60 z-40" onClick={toggleAiPanel}></div>)}
             <AIassistant isOpen={isAiPanelOpen} onClose={toggleAiPanel} />
@@ -71,7 +82,6 @@ const AppLogic = () => {
   return (
     <>
       <Routes>
-        {/* Main application routes */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -82,9 +92,7 @@ const AppLogic = () => {
           <Route path="collections" element={<div className="p-8"><h1 className="text-3xl font-bold">Collections</h1></div>} />
         </Route>
         
-        {/* 3. ADDED: This route catches any old "/app/..." URL and redirects it. */}
         <Route path="/app/*" element={<LegacyAppRedirect />} />
-
       </Routes>
       <LoginModal />
     </>

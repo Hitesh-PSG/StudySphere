@@ -62,7 +62,8 @@ const Projects = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-950 text-gray-200">
+    // AFTER (The corrected code)
+<div className="w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
           <div>

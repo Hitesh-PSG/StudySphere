@@ -64,7 +64,7 @@ const Discover = () => {
 
   return (
     // --- KEY CHANGE IS HERE: Add the ID to this div ---
-    <div id="discover-section" className="bg-slate-900 min-h-screen text-slate-200">
+    <div id="discover-section" className="w-full">
       <div className="container mx-auto p-4 md:p-8">
         <div className="text-center mb-10">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Resource Hub</h1>
