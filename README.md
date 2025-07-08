@@ -30,9 +30,12 @@ This project was built with a modern frontend stack.
 
 _Add updated screenshots from your new application here. Replace the links below._
 
-![StudySphere Hub Homepage](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195544.png)
-![Discover](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195713.png)
-![Article & AI Assistant](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-07-08%20230130.png)
+![StudySphere Hub Homepage](https://raw.githubusercontent.com/Hitesh-PSG/StudySphere/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195544.png)
+
+![Discover](https://raw.githubusercontent.com/Hitesh-PSG/StudySphere/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195713.png)
+
+![Article & AI Assistant](https://raw.githubusercontent.com/Hitesh-PSG/StudySphere/main/FRONTEND/src/assets/Screenshot%202025-07-08%20230130.png)
+
 
 
 ### 🚀 Run the Project Locally
