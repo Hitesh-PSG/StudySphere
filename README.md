@@ -32,7 +32,7 @@ _Add updated screenshots from your new application here. Replace the links below
 
 ![StudySphere Hub Homepage](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195544.png)
 ![Discover](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195713.png)
-![Article & AI Assistant](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-07-08%20225811.png)
+![Article & AI Assistant](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-07-08%20230130.png)
 
 
 ### 🚀 Run the Project Locally
