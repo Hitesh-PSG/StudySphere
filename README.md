@@ -14,9 +14,9 @@ A collaborative platform for students to share, discover, and review study mater
 [![Node.js](https://img.shields.io/badge/node.js-%23339933.svg?&style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?&style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-![EJS](https://img.shields.io/badge/EJS-A91E50.svg?style=for-the-badge&logo=ejs&logoColor=white)
+![React.js](https://img.shields.io/badge/EJS-A91E50.svg?style=for-the-badge&logo=ejs&logoColor=white)
 [![Bootstrap](https://img.shields.io/badge/bootstrap-%237952B3.svg?&style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
-[![Passport.js](https://img.shields.io/badge/passport.js-34E27A.svg?style=for-the-badge&logo=passport&logoColor=white)](http://www.passportjs.org/)
+[![Firebase](https://img.shields.io/badge/passport.js-34E27A.svg?style=for-the-badge&logo=passport&logoColor=white)](http://www.passportjs.org/)
 [![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5.svg?style=for-the-badge&logo=Cloudinary&logoColor=white)](https://cloudinary.com/)
 
 ### Project Screenshots
