@@ -30,7 +30,7 @@ This project was built with a modern frontend stack.
 
 _Add updated screenshots from your new application here. Replace the links below._
 
-![StudySphere Hub Homepage](https://link-to-your-screenshot-1.png)
+![StudySphere Hub Homepage]([https://link-to-your-screenshot-1.png](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195544.png))
 ![PDF Viewer](https://link-to-your-screenshot-2.png)
 ![Subject Selection](https://link-to-your-screenshot-3.png)
 
