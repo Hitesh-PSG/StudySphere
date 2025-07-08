@@ -31,8 +31,8 @@ This project was built with a modern frontend stack.
 _Add updated screenshots from your new application here. Replace the links below._
 
 ![StudySphere Hub Homepage](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195544.png)
-![PDF Viewer](https://link-to-your-screenshot-2.png)
-![Subject Selection](https://link-to-your-screenshot-3.png)
+![Discover](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-06-18%20195713.png)
+![Article & AI Assistant](https://github.com/Hitesh-PSG/StudySphere/blob/main/FRONTEND/src/assets/Screenshot%202025-07-08%20225811.png)
 
 
 ### 🚀 Run the Project Locally
@@ -70,7 +70,7 @@ _Add updated screenshots from your new application here. Replace the links below
 
 ### 🔗 Live Demo
 
-You can view the live deployed version here: **[https://studysphere-hub.vercel.app/](https://studysphere-hub.vercel.app/)**
+You can view the live deployed version here: **[https://studysphere-hub.vercel.app/](https://studysphere--hub.vercel.app/)**
 
 
 ## Author
