@@ -5,7 +5,6 @@ import { Send, Sparkles, X } from 'lucide-react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import AIMessage from './AIMessage';
 
-// --- SETUP (Unchanged) ---
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -18,18 +17,12 @@ const AIassistant = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   
-  // --- CHANGE: We no longer need to manage the chat session manually like this ---
-  // const chatSession = useRef(null);
-  // useEffect(() => {
-  //   chatSession.current = model.startChat({ history: [] });
-  // }, []);
-
+  
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]); // Also scroll when loading indicator appears/disappears
+  }, [messages, isLoading]);
 
-  // --- NEW LOGIC: This function is completely rewritten to support streaming ---
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (inputValue.trim() === '' || isLoading) return;
@@ -40,7 +33,6 @@ const AIassistant = ({ isOpen, onClose }) => {
     setInputValue('');
     setIsLoading(true);
 
-    // Create a placeholder for the AI's response immediately.
     const aiResponseId = Date.now() + 1;
     const aiResponsePlaceholder = { id: aiResponseId, sender: 'ai', summary: '', details: null };
     setMessages((prev) => [...prev, aiResponsePlaceholder]);

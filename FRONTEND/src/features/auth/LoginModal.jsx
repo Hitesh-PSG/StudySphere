@@ -1,17 +1,11 @@
-// src/Login/LoginModal.jsx
-
 import React, { useState, useEffect } from 'react';
-import { useLoginModal } from './LoginModalContext';
-import { useAuth } from './AuthContext';
-// This path is correct because it looks in the current folder
-import { auth } from "./firebase"; 
-import { 
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider
-} from 'firebase/auth';
-import { Sparkles } from 'lucide-react'; // We no longer need the 'X' icon
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { Sparkles } from 'lucide-react';
+
+// --- FIXED IMPORTS ---
+import { useLoginModal } from '../../contexts/LoginModalContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { auth } from "../../lib/firebase";
 
 const LoginModal = () => {
   const { isOpen, closeModal } = useLoginModal();
@@ -23,7 +17,6 @@ const LoginModal = () => {
   const [error, setError] = useState('');
   const googleProvider = new GoogleAuthProvider();
 
-  // This is now the ONLY way the modal can be closed: a successful login.
   useEffect(() => {
     if (currentUser) {
       closeModal();
@@ -55,24 +48,10 @@ const LoginModal = () => {
   const inputStyles = "w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500";
 
   return (
-    // The overlay is now darker and cannot be clicked to close.
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="relative w-full max-w-md bg-slate-800 rounded-lg shadow-2xl p-8 border border-slate-700">
-        
-        {/* The 'X' close button has been removed. */}
-
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white flex items-center justify-center gap-2">
-            <Sparkles className="text-yellow-400" /> Welcome!
-          </h1>
-          <p className="text-gray-400 mt-2">
-            Please sign in or create an account to continue.
-          </p>
-        </div>
-
+        <div className="text-center mb-8"><h1 className="text-3xl font-bold text-white flex items-center justify-center gap-2"><Sparkles className="text-yellow-400" /> Welcome!</h1><p className="text-gray-400 mt-2">Please sign in or create an account to continue.</p></div>
         {error && <p className="bg-red-500/20 text-red-300 text-sm p-3 rounded-md mb-4 text-center">{error}</p>}
-        
-        {/* The form remains the same */}
         <form onSubmit={handleAuthAction} className="space-y-6">
           <div><label htmlFor="email-modal" className="block text-sm font-medium text-gray-300 mb-2">Email</label><input id="email-modal" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={inputStyles} placeholder="you@example.com" /></div>
           <div><label htmlFor="password-modal" className="block text-sm font-medium text-gray-300 mb-2">Password</label><input id="password-modal" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className={inputStyles} placeholder="••••••••" /></div>
@@ -84,5 +63,4 @@ const LoginModal = () => {
     </div>
   );
 };
-
 export default LoginModal;

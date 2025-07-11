@@ -3,18 +3,17 @@
 import React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-
-import App from "./App.jsx";
-import NotificationProvider from './NotificationContext.jsx';
-// --- KEY CHANGE: Import BrowserRouter ---
 import { BrowserRouter } from 'react-router-dom';
+
+// --- FIXED PATHS ---
+import "./styles/index.css"; // Correct path to global styles
+import { NotificationProvider } from './contexts/NotificationContext.jsx'; // Correct path to context
+import App from "./App.jsx";
 
 const root = createRoot(document.getElementById("root"));
 
 root.render(
   <StrictMode>
-    {/* --- KEY CHANGE: Wrap everything in BrowserRouter --- */}
     <BrowserRouter>
       <NotificationProvider>
         <App />

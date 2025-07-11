@@ -1,8 +1,6 @@
-// src/Login/AuthContext.jsx
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth } from './firebase'; // Ensure this path is correct
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../lib/firebase';
 
 const AuthContext = createContext();
 
@@ -12,7 +10,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // This is correct
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -26,15 +24,12 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
-  // --- THIS IS THE ONLY CHANGE ---
-  // We need to add 'loading' here so other components can use it.
   const value = {
     currentUser,
     logout,
-    loading, // <-- ADD THIS LINE
+    loading,
   };
 
-  // This part is perfect. It prevents rendering before the auth check is done.
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

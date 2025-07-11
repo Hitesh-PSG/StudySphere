@@ -1,26 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// --- 1. ADD THESE IMPORTS ---
 import { io } from 'socket.io-client';
-import { projects as localProjects } from './Dashboard/projects.js';
-import { educators as localEducators } from './Dashboard/educators.js';
-import { resources as localResources } from './Discover/resources.js';
+import { projects as localProjects } from '../features/dashboard/projects.js';
+import { educators as localEducators } from '../features/dashboard/educators.js';
+import { resources as localResources } from '../features/discover/resources.js';
 
-// --- 2. CREATE THE SOCKET CONNECTION ---
-// Connect to your backend. The URL comes from your .env file.
-// This is created once and reused across the app.
 const socket = io(import.meta.env.VITE_API_URL);
-
 const NotificationContext = createContext();
 
 export const useNotifications = () => useContext(NotificationContext);
 
-const NotificationProvider = ({ children }) => {
+export const NotificationProvider = ({ children }) => {
   const [backendNotifications, setBackendNotifications] = useState([]);
   const [localFileNotifications, setLocalFileNotifications] = useState([]);
 
-  // --- 3. THIS IS THE NEW REAL-TIME LOGIC ---
   useEffect(() => {
-    // A) Fetch the initial list of notifications when the app loads
     const fetchInitialNotifications = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications`);
@@ -34,22 +27,15 @@ const NotificationProvider = ({ children }) => {
 
     fetchInitialNotifications();
 
-    // B) Set up the listener for new notifications from the server
-    // This is the core of the real-time update.
     socket.on('new_notification', (newNotification) => {
-      // Add the new notification to the top of the list
-      console.log('Received new notification via WebSocket!', newNotification);
       setBackendNotifications(prevNotifications => [newNotification, ...prevNotifications]);
     });
 
-    // C) Clean up the listener when the component unmounts to prevent memory leaks
     return () => {
       socket.off('new_notification');
     };
-  }, []); // The empty dependency array ensures this runs only once.
+  }, []);
 
-
-  // --- Logic for local file notifications (No changes needed here) ---
   useEffect(() => {
     const seenIds = JSON.parse(localStorage.getItem('seenContentIds')) || [];
     const newProjectIds = localProjects.map(p => p.id).filter(id => id && !seenIds.includes(id));
@@ -71,12 +57,11 @@ const NotificationProvider = ({ children }) => {
   }, []);
 
   const allNotifications = [...backendNotifications, ...localFileNotifications];
-  const notificationCount = allNotifications.filter(n => !n.isRead).length; // Let's count only unread ones
+  const notificationCount = allNotifications.filter(n => !n.isRead).length;
 
   const markAllAsSeen = async () => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/mark-read`, { method: 'POST' });
-      // After marking them as read on the backend, update the frontend state
       setBackendNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch (error) {
       console.error("Failed to mark backend notifications as read:", error);
@@ -104,4 +89,5 @@ const NotificationProvider = ({ children }) => {
   );
 };
 
+// Exporting NotificationProvider as default for consistency
 export default NotificationProvider;

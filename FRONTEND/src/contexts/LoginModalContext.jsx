@@ -1,5 +1,3 @@
-// src/Login/LoginModalContext.jsx
-
 import React, { createContext, useContext, useState } from 'react';
 
 const LoginModalContext = createContext();

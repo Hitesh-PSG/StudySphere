@@ -1,34 +1,24 @@
-// Path: FRONTEND/src/App.jsx
-
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Outlet, Navigate, useParams, Link } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-
-// --- CONTEXT IMPORTS ---
-import { AuthProvider, useAuth } from './Login/AuthContext';
-import NotificationProvider from './NotificationContext.jsx';
-import { LoginModalProvider, useLoginModal } from './Login/LoginModalContext';
-
-// --- LAYOUT & PAGE IMPORTS ---
-import Header from "./header.jsx";
-import Footer from "./footer.jsx";
-import Sidebar from "./sidebar.jsx";
-import AIassistant from "./AI/AIasssistant.jsx";
-import Dashboard from "./Dashboard/Dashboard.jsx";
-import Discover from "./Discover/Discover.jsx";
-import ArticlesPage from "./Articles/ArticlesPage.jsx";
-import LoginModal from "./Login/LoginModal.jsx";
-import Projects from './MiniProject/projectshowcase/Projects.jsx';
-import DiscussionPage from './Discussions/DiscussionPage.jsx';
-import LofiVaporwaveBackground from "./LofiVaporwaveBackground.jsx";
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { LoginModalProvider, useLoginModal } from './contexts/LoginModalContext';
+import Header from "./components/layout/Header.jsx";
+import Footer from "./components/layout/Footer.jsx";
+import Sidebar from "./components/layout/Sidebar.jsx";
+import LofiVaporwaveBackground from "./components/layout/LofiVaporwaveBackground.jsx";
+import AIassistant from "./features/ai-assistant/AIasssistant.jsx";
+import LoginModal from "./features/auth/LoginModal.jsx";
+import DashboardPage from "./pages/DashboardPage.jsx";
+import DiscoverPage from "./pages/DiscoverPage.jsx";
+import ArticlesPage from "./pages/ArticlesPage.jsx";
+import ProjectsPage from './pages/ProjectsPage.jsx';
+import DiscussionPage from './pages/DiscussionPage.jsx';
+import { resources } from './features/discover/resources.js';
+import { articles } from './features/articles/article.js';
 import { Menu, ChevronLeft, Clock, User } from 'lucide-react';
 
-// --- DATA IMPORTS FOR FULL-SCREEN PAGES ---
-import { resources } from './Discover/resources.js';
-import { articles } from './Articles/article.jsx'; 
-
-// --- All other components (VideoPlayerPage, ArticleViewPage) remain exactly the same ---
-const VideoPlayerPage = () => { /* ... no changes here ... */ 
+const VideoPlayerPage = () => {
   const { videoId } = useParams();
   const resource = resources.find(r => r.id === videoId);
 
@@ -46,9 +36,10 @@ const VideoPlayerPage = () => { /* ... no changes here ... */
     </div>
   );
 };
-const ArticleViewPage = () => { /* ... no changes here ... */ 
+
+const ArticleViewPage = () => {
   const { articleId } = useParams();
-  const article = articles.find(a => String(a.id) === articleId); // Ensure ID types match
+  const article = articles.find(a => String(a.id) === articleId);
 
   if (!article) return <div className="h-screen w-full bg-slate-950 flex items-center justify-center"><Link to="/articles" className="text-xl text-yellow-400">Article not found. Click to return.</Link></div>;
   
@@ -72,14 +63,8 @@ const ArticleViewPage = () => { /* ... no changes here ... */
   );
 };
 
-
-// ========================================================================
-// --- MAIN LAYOUT (WITH SIDEBAR) ---
-// ========================================================================
 const MainLayout = () => {
-    // EDIT 1: Add state here to control the sidebar
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-
     const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
     const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
     const { currentUser } = useAuth();
@@ -103,7 +88,6 @@ const MainLayout = () => {
         <div className="flex h-screen text-slate-100">
             <LofiVaporwaveBackground />
             
-            {/* EDIT 2: Conditionally render the sidebar based on our new state */}
             {isSidebarVisible && (
                 <Sidebar isAiPanelOpen={isAiPanelOpen} onToggleAiPanel={toggleAiPanel} isMobileOpen={isMobileSidebarOpen} onMobileClose={() => setMobileSidebarOpen(false)} />
             )}
@@ -112,8 +96,6 @@ const MainLayout = () => {
                 <Header />
                 <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
                     <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { background: '#334155', color: '#f1f5f9' } }} />
-                    
-                    {/* EDIT 3: Pass the setter function down to child routes (like Discover) */}
                     <Outlet context={{ setIsSidebarVisible }} />
                 </main>
                 <Footer />
@@ -125,18 +107,17 @@ const MainLayout = () => {
     );
 };
 
-// --- All other components (AppLogic, App) remain exactly the same ---
-const AppLogic = () => { /* ... no changes here ... */ 
+const AppLogic = () => {
   return (
     <>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="discover" element={<Discover />} />
+          <Route path="dashboard" element={<DashboardPage />} /> 
+          <Route path="discover" element={<DiscoverPage />} />
           <Route path="articles" element={<ArticlesPage />} />
           <Route path="discussions" element={<DiscussionPage />} />
-          <Route path="projects" element={<Projects />} />
+          <Route path="projects" element={<ProjectsPage />} />
           <Route path="collections" element={<div className="p-8"><h1 className="text-3xl font-bold">Collections</h1></div>} />
         </Route>
         <Route path="/discover/play/:videoId" element={<VideoPlayerPage />} />
@@ -146,14 +127,13 @@ const AppLogic = () => { /* ... no changes here ... */
     </>
   );
 };
-const App = () => ( /* ... no changes here ... */ 
-  <NotificationProvider>
+
+const App = () => (
     <AuthProvider>
       <LoginModalProvider>
         <AppLogic />
       </LoginModalProvider>
     </AuthProvider>
-  </NotificationProvider>
 );
 
 export default App;
