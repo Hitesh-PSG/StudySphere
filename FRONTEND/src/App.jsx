@@ -64,18 +64,12 @@ const ArticleViewPage = () => {
 };
 
 const MainLayout = () => {
-    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-    const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
-    const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-    const { currentUser } = useAuth();
-    const { openModal } = useLoginModal();
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-    useEffect(() => {
-        if (!currentUser) {
-            const timer = setTimeout(() => { openModal(); }, 4000); 
-            return () => clearTimeout(timer);
-        }
-    }, [currentUser, openModal]);
+  const { currentUser } = useAuth();
+  const { openModal } = useLoginModal();
 
     const toggleAiPanel = () => setIsAiPanelOpen(prev => !prev);
     const toggleMobileSidebar = () => setMobileSidebarOpen(prev => !prev);
